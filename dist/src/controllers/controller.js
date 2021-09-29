@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("../constants/constants");
 const https = require('https');
 exports.login = (req, res, next) => {
     try {
@@ -20,6 +21,24 @@ exports.getExternalApi = (req, res, next) => {
         response.on('end', () => {
             let result = JSON.parse(data);
             console.log(result[0].id);
+            return res.status(200).json(result);
+        });
+    })
+        .on('error', (err) => {
+        console.log(err);
+    });
+};
+exports.getLunarCrush = (req, res, next) => {
+    const coin = req.params.coin;
+    https
+        .get(`https://api.lunarcrush.com/v2?data=assets&key=${constants_1.Constants.API_KEY}&symbol=${coin}`, (response) => {
+        let data = '';
+        response.on('data', (chunk) => {
+            data += chunk;
+        });
+        response.on('end', () => {
+            let result = JSON.parse(data);
+            new Date().getTime() - result.data[0].time;
             return res.status(200).json(result);
         });
     })

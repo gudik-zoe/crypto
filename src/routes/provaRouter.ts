@@ -6,4 +6,6 @@ router.get('/', controller.login);
 
 router.get('/crypto', controller.getExternalApi);
 
+router.get('/lunarcrush/:coin', controller.getLunarCrush);
+
 module.exports = router;
